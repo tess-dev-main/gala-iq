@@ -5,3 +5,9 @@ export interface Photo {
     url: string;
     thumbnailUrl: string;
 }
+
+export interface PhotoState {
+    photos: Photo[];
+    loading: boolean;
+    error: string;
+}

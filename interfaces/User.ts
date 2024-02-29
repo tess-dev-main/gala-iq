@@ -27,3 +27,9 @@ export interface User {
     website: string;
     company: Company;
 }
+
+export interface UserState {
+    users: User[];
+    loading: boolean;
+    error: string;
+}
