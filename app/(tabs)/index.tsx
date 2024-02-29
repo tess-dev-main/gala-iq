@@ -1,9 +1,21 @@
+import { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 
 import EditScreenInfo from '@/components/EditScreenInfo';
 import { Text, View } from '@/components/Themed';
+import { useAppDispatch } from '@/hooks';
+import { fetchUsers } from '@/features/userSlice';
+import { fetchPhotos } from '@/features/photoSlice';
 
 export default function TabOneScreen() {
+  
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchUsers());
+    dispatch(fetchPhotos());
+  }, [dispatch]);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tab One</Text>
