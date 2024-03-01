@@ -12,7 +12,7 @@ export const fetchPhotosPaginated = createAsyncThunk<Photo[], number>(
     'photo/fetchPhotosPaginated',
     async (page: number) => {
       try {
-        const response = await axios.get(`${getPhotos}?_start=${(page - 1) * 25}&_limit=25`);
+        const response = await axios.get(`${getPhotos}?_start=${(page - 1)}&_limit=25`);
         return response.data;
       } catch (error) {
         throw error;
