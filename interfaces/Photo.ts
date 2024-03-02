@@ -11,3 +11,14 @@ export interface PhotoState {
     loading: boolean;
     error: string;
 }
+
+export interface Album {
+    userId: number;
+    id: number;
+    title: string;
+}
+
+export interface FetchAlbumsResponse {
+    userId: number;
+    albums: Album[];
+}

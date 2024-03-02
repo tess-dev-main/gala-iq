@@ -1,3 +1,5 @@
+import { Album } from "./Photo";
+
 export interface GeoLocation {
     lat: string;
     lng: string;
@@ -26,6 +28,7 @@ export interface User {
     phone: string;
     website: string;
     company: Company;
+    albums?: Album[];
 }
 
 export interface UserState {
