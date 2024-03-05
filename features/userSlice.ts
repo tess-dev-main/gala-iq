@@ -3,12 +3,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { getAlbumAsyncAddress, getUserAlbums, getUsers } from '../constants/Strings';
-import { Album, User, UserState } from '../interfaces';
-
-interface ArchiveAlbumByIdDTO {
-    album: Album,
-    UUID: number
-}
+import { Album, ArchiveAlbumByIdDTO, User, UserState } from '../interfaces';
 
 export const fetchUsers = createAsyncThunk<User[]>('user/fetchUsers', () => {
     return axios.get(getUsers).then(res => res.data);
@@ -43,11 +38,11 @@ export const fetchUserAlbums = createAsyncThunk<User[], User[]>('user/fetchAlbum
 });
 
 export const archiveAlbumById = createAsyncThunk<ArchiveAlbumByIdDTO, ArchiveAlbumByIdDTO>('photo/archiveAlbumById', async ({ album, UUID }) => {
-    album.isArchived = true;
+    const _ALBUM: Album = { ...album, isArchived: true }
     try {
-        await AsyncStorage.setItem(getAlbumAsyncAddress(album.id), JSON.stringify(album));
+        await AsyncStorage.setItem(getAlbumAsyncAddress(album.id), JSON.stringify(_ALBUM));
         return {
-            album,
+            album: _ALBUM,
             UUID
         };
     } catch (error) {
@@ -96,10 +91,12 @@ const userSlice = createSlice({
                 state.error = '';
             })
             .addCase(archiveAlbumById.fulfilled, (state, action) => {
-                const _targetUser = state.users.filter(u => u.id == action.payload.UUID)[0];
-                _targetUser.albums?.filter(_album => _album.id != action.payload.album.id);
+                const { album, UUID } = action.payload;
+                const userToUpdate = state.users.find(u => u.id == UUID);
+                if (userToUpdate && userToUpdate.albums) {
+                    userToUpdate.albums = userToUpdate.albums?.filter(a => a.id != album.id)
+                }
                 state.loading = false;
-                state.users = [...state.users, _targetUser];
             })
             .addCase(archiveAlbumById.rejected, (state, action) => {
                 state.loading = false;
