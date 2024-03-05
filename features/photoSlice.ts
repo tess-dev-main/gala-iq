@@ -20,6 +20,17 @@ export const fetchPhotosPaginated = createAsyncThunk<Photo[], number>(
     }
   );
 
+export const fetchAlbumById = createAsyncThunk<Photo[], number>(
+    'photo/fetchAlbumById', async (id: number) => {
+        try {
+            const response = await axios.get(getAlbumById(id));
+            return response.data;
+        } catch(error) {
+            throw error;
+        }
+    }
+);
+
 const initialState: PhotoState = {
     photos: [],
     loading: false,
@@ -55,7 +66,19 @@ const photoSlice = createSlice({
             .addCase(fetchPhotosPaginated.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message ? action.error.message : 'Error fetching paginated photos, please try again.';
-            });
+            })
+            .addCase(fetchAlbumById.pending, (state) => {
+                state.loading = true;
+                state.error = '';
+            })
+            .addCase(fetchAlbumById.fulfilled, (state, action) => {
+                state.loading = false;
+                state.photos = action.payload;
+            })
+            .addCase(fetchAlbumById.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message ? action.error.message : 'Error fetching paginated photos, please try again.';
+            })
     }
 });
 
