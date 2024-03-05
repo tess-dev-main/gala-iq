@@ -5,8 +5,8 @@ import { useSelector } from "react-redux";
 import { Text } from '@/components/Themed';
 import { RootState } from "../store";
 import { useAppDispatch } from "@/hooks";
-import { fetchUserAlbums, fetchUsers } from "@/features/userSlice";
-import { Album, User } from "@/interfaces";
+import { fetchUserAlbums, fetchUsers, archiveAlbumById } from "@/features/userSlice";
+import { ArchiveAlbumByIdDTO, User } from "@/interfaces";
 import { Link } from "expo-router";
 import { Feather } from "@expo/vector-icons";
 
@@ -21,13 +21,22 @@ export default function AgentsScreen() {
     }, [dispatch]);
 
     useEffect(() => {
-        if (users.length > 0) {
+        if (users.length > 0 && !users[0].albums) {
             dispatch(fetchUserAlbums(users));
         }
-    }, [dispatch]);
+    }, [loading]);
 
-    const renderAlbumItem = (album: Album) => (
-            <View style={styles.albumItemContainer}>
+    const renderAlbumItem = ({ album, UUID }: ArchiveAlbumByIdDTO) => {
+
+        let _hide = false;
+
+        let handleOnPress = () => {
+            _hide = true;
+            dispatch(archiveAlbumById({ album, UUID }));
+        };
+
+        return (
+            <View style={_hide ? {display: 'none'} : styles.albumItemContainer}>
                 <Link
                     style={styles.albumItemText}
                     href={{
@@ -38,11 +47,13 @@ export default function AgentsScreen() {
                     {album.title}
                 </Link>
                 <TouchableOpacity
+                    onPress={() => handleOnPress()}
                 >
                     <Feather name="trash-2" size={24} />
                 </TouchableOpacity>
             </View>
-    );
+    )
+    };
 
     const renderItem = (agent: User) => (
         <View style={styles.agentContainer}>
@@ -51,7 +62,8 @@ export default function AgentsScreen() {
                 <FlatList
                     data={agent.albums.filter(each => !!each.isArchived == false)}
                     keyExtractor={(album) => album.id.toString()}
-                    renderItem={({ item: album }) => renderAlbumItem(album)}
+                    renderItem={({ item: album }) => renderAlbumItem({album, UUID: agent.id})}
+                    
                 />
             )}
         </View>
@@ -87,6 +99,7 @@ const styles = StyleSheet.create({
     },
     albumItemContainer: {
         flex: 1,
+        display: "flex",
         flexDirection: 'row',
         backgroundColor: "#FFFFFF",
         borderRadius: 8,
