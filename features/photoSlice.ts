@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import { getPhotos, getAlbumById, getUserAlbums } from '../constants/Strings';
+import { getPhotos, getAlbumById } from '../constants/Strings';
 import { Photo, PhotoState } from '../interfaces';
 
 export const fetchPhotos = createAsyncThunk<Photo[]>('photo/fetchPhotos', () => {
