@@ -44,7 +44,7 @@ export default function AgentsScreen() {
             <Text style={styles.agentName}>{agent.name}</Text>
             {agent.albums && (
                 <FlatList
-                    data={agent.albums}
+                    data={agent.albums.filter(each => !!each.isArchived == false)}
                     keyExtractor={(album) => album.id.toString()}
                     renderItem={({ item: album }) => renderAlbumItem(album)}
                 />
