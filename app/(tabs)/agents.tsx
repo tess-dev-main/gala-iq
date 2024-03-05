@@ -7,6 +7,7 @@ import { RootState } from "../store";
 import { useAppDispatch } from "@/hooks";
 import { fetchUserAlbums, fetchUsers } from "@/features/userSlice";
 import { Album, User } from "@/interfaces";
+import { Link } from "expo-router";
 
 export default function AgentsScreen() {
     const dispatch = useAppDispatch();
@@ -26,7 +27,15 @@ export default function AgentsScreen() {
 
     const renderAlbumItem = (album: Album) => (
         <TouchableOpacity style={styles.albumItemContainer}>
-            <Text style={styles.albumItemText}>{album.title}</Text>
+            <Link
+                style={styles.albumItemText}
+                href={{
+                    pathname: "/album/[id]",
+                    params: { id: album.id }
+                }}
+            >
+                {album.title}
+            </Link>
         </TouchableOpacity>
     );
 
