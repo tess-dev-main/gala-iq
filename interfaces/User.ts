@@ -36,3 +36,8 @@ export interface UserState {
     loading: boolean;
     error: string;
 }
+
+export interface ArchiveAlbumByIdDTO {
+    album: Album,
+    UUID: number
+}
