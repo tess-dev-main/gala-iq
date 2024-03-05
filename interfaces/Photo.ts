@@ -16,6 +16,7 @@ export interface Album {
     userId: number;
     id: number;
     title: string;
+    isArchived?: boolean;
 }
 
 export interface FetchAlbumsResponse {
