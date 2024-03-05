@@ -8,6 +8,7 @@ import { useAppDispatch } from "@/hooks";
 import { fetchUserAlbums, fetchUsers } from "@/features/userSlice";
 import { Album, User } from "@/interfaces";
 import { Link } from "expo-router";
+import { Feather } from "@expo/vector-icons";
 
 export default function AgentsScreen() {
     const dispatch = useAppDispatch();
@@ -26,17 +27,21 @@ export default function AgentsScreen() {
     }, [dispatch]);
 
     const renderAlbumItem = (album: Album) => (
-        <TouchableOpacity style={styles.albumItemContainer}>
-            <Link
-                style={styles.albumItemText}
-                href={{
-                    pathname: "/album/[id]",
-                    params: { id: album.id }
-                }}
-            >
-                {album.title}
-            </Link>
-        </TouchableOpacity>
+            <View style={styles.albumItemContainer}>
+                <Link
+                    style={styles.albumItemText}
+                    href={{
+                        pathname: "/album/[id]",
+                        params: { id: album.id }
+                    }}
+                >
+                    {album.title}
+                </Link>
+                <TouchableOpacity
+                >
+                    <Feather name="trash-2" size={24} />
+                </TouchableOpacity>
+            </View>
     );
 
     const renderItem = (agent: User) => (
@@ -81,6 +86,8 @@ const styles = StyleSheet.create({
         color: "#333333",
     },
     albumItemContainer: {
+        flex: 1,
+        flexDirection: 'row',
         backgroundColor: "#FFFFFF",
         borderRadius: 8,
         paddingVertical: 10,
@@ -94,6 +101,9 @@ const styles = StyleSheet.create({
             width: 0,
             height: 2,
         },
+        alignContent: "space-between",
+        justifyContent: "space-between",
+        width: "50%"
     },
     albumItemText: {
         fontSize: 16,
