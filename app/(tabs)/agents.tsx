@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { ActivityIndicator, FlatList, StyleSheet, View, TouchableOpacity } from "react-native";
+import { ActivityIndicator, Dimensions, FlatList, StyleSheet, View, TouchableOpacity } from "react-native";
 import { useSelector } from "react-redux";
 
 import { Text } from '@/components/Themed';
@@ -60,6 +60,7 @@ export default function AgentsScreen() {
             <Text style={styles.agentName}>{agent.name}</Text>
             {agent.albums && (
                 <FlatList
+                    showsVerticalScrollIndicator={false}
                     data={agent.albums.filter(each => !!each.isArchived == false)}
                     keyExtractor={(album) => album.id.toString()}
                     renderItem={({ item: album }) => renderAlbumItem({album, UUID: agent.id})}
@@ -73,6 +74,7 @@ export default function AgentsScreen() {
         <View style={styles.container}>
             {error && <Text>Error: {error}</Text>}
             <FlatList
+                showsVerticalScrollIndicator={false}
                 data={users}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={i => renderItem(i.item)}
@@ -82,6 +84,8 @@ export default function AgentsScreen() {
     );
 }
 
+const _WIDTH = Dimensions.get("window").width * .5;
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -89,13 +93,19 @@ const styles = StyleSheet.create({
         paddingTop: 16,
     },
     agentContainer: {
-        marginBottom: 20,
+        marginBottom: 60,
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        width: "80%",
+        alignSelf: "center"
     },
     agentName: {
         fontSize: 24,
         fontWeight: "bold",
         marginBottom: 8,
         color: "#333333",
+        alignSelf: "flex-start"
     },
     albumItemContainer: {
         flex: 1,
@@ -114,9 +124,9 @@ const styles = StyleSheet.create({
             width: 0,
             height: 2,
         },
-        alignContent: "space-between",
         justifyContent: "space-between",
-        width: "50%"
+        minWidth: _WIDTH,
+        width: _WIDTH,
     },
     albumItemText: {
         fontSize: 16,
