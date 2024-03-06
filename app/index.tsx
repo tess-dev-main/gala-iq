@@ -1,6 +1,6 @@
 import { Link } from 'expo-router';
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
 const FrontPage = () => {
   return (
