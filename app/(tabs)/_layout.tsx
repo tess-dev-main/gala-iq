@@ -30,13 +30,13 @@ export default function TabLayout() {
         name="agents"
         options={{
           title: 'View Agents',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
         }}
       />
       <Tabs.Screen
         name="viewAll"
         options={{
-          title: 'View All',
+          title: 'Event Gallery',
           tabBarIcon: ({ color }) => <TabBarIcon name="camera" color={color} />,
         }}
       />
