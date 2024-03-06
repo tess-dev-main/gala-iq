@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, StyleSheet } from "react-native";
-import { useSelector } from "react-redux";
+import { ActivityIndicator, FlatList } from "react-native";
 
 import { Text, View } from '@/components/Themed';
 import PhotoItem  from '@/components/Photo';
-import { RootState } from "../store";
-import { useAppDispatch } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks";
 import { fetchPhotosPaginated } from "@/features/photoSlice";
 
 
@@ -14,18 +12,14 @@ export default function TabThreeScreen() {
 
     const dispatch = useAppDispatch();
 
-    const photos = useSelector((state: RootState) => state.photo.photos);
-    const error = useSelector((state: RootState) => state.photo.error);
-    const loading = useSelector((state: RootState) => state.photo.loading);
+    const photos = useAppSelector((state) => state.photo.photos);
+    const error = useAppSelector((state) => state.photo.error);
+    const loading = useAppSelector((state) => state.photo.loading);
 
     const [page, setPage] = useState(1);
-    const [isLoad, setIsLoad] = useState(false);
 
     useEffect(() => {
-        setIsLoad(true);
-        console.log(`Loading!`);
         setTimeout(() => {
-            setIsLoad(false);
         }, 1000);
         dispatch(fetchPhotosPaginated(page));
     }, [page]);

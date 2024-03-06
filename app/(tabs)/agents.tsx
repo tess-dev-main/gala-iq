@@ -1,10 +1,8 @@
 import React, { useEffect } from "react";
 import { ActivityIndicator, Dimensions, FlatList, StyleSheet, View, TouchableOpacity } from "react-native";
-import { useSelector } from "react-redux";
 
 import { Text } from '@/components/Themed';
-import { RootState } from "../store";
-import { useAppDispatch } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks";
 import { fetchUserAlbums, fetchUsers, archiveAlbumById } from "@/features/userSlice";
 import { ArchiveAlbumByIdDTO, User } from "@/interfaces";
 import { Link } from "expo-router";
@@ -12,9 +10,9 @@ import { Feather } from "@expo/vector-icons";
 
 export default function AgentsScreen() {
     const dispatch = useAppDispatch();
-    const users = useSelector((state: RootState) => state.user.users);
-    const error = useSelector((state: RootState) => state.user.error);
-    const loading = useSelector((state: RootState) => state.user.loading);
+    const users = useAppSelector((state) => state.user.users);
+    const error = useAppSelector((state) => state.user.error);
+    const loading = useAppSelector((state) => state.user.loading);
 
     useEffect(() => {
         dispatch(fetchUsers());
